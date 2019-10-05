@@ -6,10 +6,10 @@ Created on Sun Sep  1 15:38:20 2019
 @author: mariana
 """
     
-    from keras.models import Sequential
-    from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout
-    from keras.layers.normalization import BatchNormalization
-    from keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential
+from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout
+from keras.layers.normalization import BatchNormalization
+from keras.preprocessing.image import ImageDataGenerator
 
 classificador = Sequential()
 classificador.add(Conv2D(32,(3,3),input_shape = (64,64,3), activation = 'relu'))
