@@ -197,12 +197,20 @@ if __name__ == '__main__':
                                        zoom_range = 0.2)
     gerador_teste = ImageDataGenerator(rescale = 1./255)
     
+<<<<<<< HEAD
     base_train = gerador_train.flow_from_directory('/home/rodrigo/Documentos/MARIANA_TCC/TCC_Oficial/DATASET/train_set/',
+=======
+    base_train = gerador_train.flow_from_directory('/home/mariana/Documents/TCC_Oficial/DATASET/train_set',
+>>>>>>> 21a28cd751ec3d6295f18f58cae6e3e4c677f549
                                                    target_size = (img_rows,img_cols),
                                                    batch_size = bt_size,
                                                    class_mode = 'categorical')
     
+<<<<<<< HEAD
     base_teste = gerador_teste.flow_from_directory('/home/rodrigo/Documentos/MARIANA_TCC/TCC_Oficial/DATASET/test_set/',
+=======
+    base_teste = gerador_teste.flow_from_directory('/home/mariana/Documents/TCC_Oficial/DATASET/test_set',
+>>>>>>> 21a28cd751ec3d6295f18f58cae6e3e4c677f549
                                                    target_size = (img_rows,img_cols),
                                                    batch_size = bt_size,
                                                    class_mode = 'categorical')
@@ -214,3 +222,15 @@ if __name__ == '__main__':
    model.fit_generator(base_train, steps_per_epoch = 11217,
                             epochs = nb_epoch, validation_data = base_teste, 
                             validation_steps = 3740)
+<<<<<<< HEAD
+=======
+
+    # Make predictions
+    #predictions_valid = model.predict(X_valid, batch_size=batch_size, verbose=1)
+
+    # Combine 3 set of outputs using averaging
+    #predictions_valid = sum(predictions_valid)/len(predictions_valid)
+
+    # Cross-entropy loss score
+    #score = log_loss(Y_valid, predictions_valid)
+>>>>>>> 21a28cd751ec3d6295f18f58cae6e3e4c677f549

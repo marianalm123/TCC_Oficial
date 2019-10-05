@@ -10,7 +10,10 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout, Flatten, Conv2D, MaxPooling2D
 from keras.layers.normalization import BatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
+<<<<<<< HEAD
 import matplotlib.pyplot as plt
+=======
+>>>>>>> 21a28cd751ec3d6295f18f58cae6e3e4c677f549
 
 # (2) Get Data
 gerador_train = ImageDataGenerator(rescale = 1./255,
@@ -21,12 +24,20 @@ gerador_train = ImageDataGenerator(rescale = 1./255,
                                    zoom_range = 0.2)
 gerador_teste = ImageDataGenerator(rescale = 1./255)
 
+<<<<<<< HEAD
 base_train = gerador_train.flow_from_directory('/home/rodrigo/Documentos/MARIANA_TCC/TCC_Oficial/DATASET/train_set/',
+=======
+base_train = gerador_train.flow_from_directory('/home/mariana/Documents/TCC_Oficial/DATASET/train_set',
+>>>>>>> 21a28cd751ec3d6295f18f58cae6e3e4c677f549
                                                target_size = (224,224),
                                                batch_size = 32,
                                                class_mode = 'categorical')
 
+<<<<<<< HEAD
 base_teste = gerador_teste.flow_from_directory('/home/rodrigo/Documentos/MARIANA_TCC/TCC_Oficial/DATASET/test_set/',
+=======
+base_teste = gerador_teste.flow_from_directory('/home/mariana/Documents/TCC_Oficial/DATASET/test_set',
+>>>>>>> 21a28cd751ec3d6295f18f58cae6e3e4c677f549
                                                target_size = (224,224),
                                                batch_size = 32,
                                                class_mode = 'categorical')
@@ -107,6 +118,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam',\
  metrics=['accuracy'])
 
 # (5) Train
+<<<<<<< HEAD
 history = model.fit_generator(base_train, steps_per_epoch = 11217,
                             epochs = 10, validation_data = base_teste, 
                             validation_steps = 3740)
@@ -129,3 +141,8 @@ plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
+=======
+model.fit_generator(base_train, steps_per_epoch = 11217,
+                            epochs = 10, validation_data = base_teste, 
+                            validation_steps = 3740)
+>>>>>>> 21a28cd751ec3d6295f18f58cae6e3e4c677f549
