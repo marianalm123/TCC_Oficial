@@ -12,19 +12,6 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 
-from keras.utils import np_utils
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-
-from imutils import paths
-
-import numpy as np
-import argparse
-import imutils
-import cv2
-import os
-
 import matplotlib.pyplot as plt
 
 classificador = Sequential()
@@ -59,83 +46,43 @@ classificador.compile(optimizer = 'adam', loss = 'categorical_crossentropy',
 
 
 
-print("[INFO] loading images...")
-imagePaths = list(paths.list_images("/home/mariana/Documents/TCC_Oficial/DATASET/train_set/"))
-data = []
-labels = []
+gerador_train = ImageDataGenerator(rescale = 1./255,
+                                  rotation_range = 7,
+                                  horizontal_flip = True,
+                                  shear_range = 0.2,
+                                  height_shift_range = 0.7,
+                                  zoom_range = 0.2)
+gerador_teste = ImageDataGenerator(rescale = 1./255)
 
-# loop over the image paths
-for imagePath in imagePaths:
-	# extract the class label from the filename
-	label = imagePath.split(os.path.sep)[-2]
+base_train = gerador_train.flow_from_directory('/home/mariana/Documents/TCC_Oficial/DATASET/train_set/',
+                                              target_size = (64,64),
+                                              batch_size = 32,
+                                              class_mode = 'categorical')
 
-	# load the image, swap color channels, and resize it to be a fixed
-	# 128x128 pixels while ignoring aspect ratio
-	image = cv2.imread(imagePath)
-	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-	image = cv2.resize(image, (128, 128))
+base_teste = gerador_teste.flow_from_directory('//home/mariana/Documents/TCC_Oficial/DATASET/test_set/',
+                                              target_size = (64,64),
+                                              batch_size = 32,
+                                              class_mode = 'categorical')
 
-	# update the data and labels lists, respectively
-	data.append(image)
-	labels.append(label)
-    
-
-# convert the data and labels to NumPy arrays
-data = np.array(data)
-labels = np.array(labels)
- 
-# perform one-hot encoding on the labels
-lb = LabelBinarizer()
-labels = lb.fit_transform(labels)
-labels = np_utils.to_categorical(labels)
-#
-#
-#gerador_train = ImageDataGenerator(rescale = 1./255,
-#                                   rotation_range = 7,
-#                                   horizontal_flip = True,
-#                                   shear_range = 0.2,
-#                                   height_shift_range = 0.7,
-#                                   zoom_range = 0.2)
-#gerador_teste = ImageDataGenerator(rescale = 1./255)
-#
-#base_train = gerador_train.flow_from_directory('/home/mariana/Documents/TCC_Oficial/DATASET/train_set/',
-#                                               target_size = (64,64),
-#                                               batch_size = 32,
-#                                               class_mode = 'categorical')
-#
-#base_teste = gerador_teste.flow_from_directory('//home/mariana/Documents/TCC_Oficial/DATASET/test_set/',
-#                                               target_size = (64,64),
-#                                               batch_size = 32,
-#                                               class_mode = 'categorical')
-
-#history = classificador.fit_generator(base_train, steps_per_epoch = 11217,
-#                                          epochs = 10, validation_data = base_teste,
-#                                          validation_steps = 3740)
+history = classificador.fit_generator(base_train, steps_per_epoch = 11217,
+                                         epochs = 10, validation_data = base_teste,
+                                         validation_steps = 3740)
 
 
-resultados = cross_val_score(estimator = classificador,
-                            X = data, y = labels,
-                            cv = 10, scoring = 'accuracy')
+#dispõe grafico
+plt.plot(history.history['acc'])
+plt.plot(history.history['val_acc'])
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
 
-media = resultados.mean()
-
-
-
-#
-##dispõe grafico
-#plt.plot(history.history['acc'])
-#plt.plot(history.history['val_acc'])
-#plt.title('Model Accuracy')
-#plt.ylabel('Accuracy')
-#plt.xlabel('Epoch')
-#plt.legend(['Train', 'Test'], loc='upper left')
-#plt.show()
-#
-## Plot training & validation loss values
-#plt.plot(history.history['loss'])
-#plt.plot(history.history['val_loss'])
-#plt.title('Model loss')
-#plt.ylabel('Loss')
-#plt.xlabel('Epoch')
-#plt.legend(['Train', 'Test'], loc='upper left')
-#plt.show()
+# Plot training & validation loss values
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
